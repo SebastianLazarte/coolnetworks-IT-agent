@@ -20,7 +20,6 @@ For each ticket you give it, it returns:
 ---
 
 ## How to use it
-
 1. Create a new Project on Claude.ai (or open any conversation)
 2. Upload this entire folder to the Project (Knowledge / Project Files)
 3. Start the conversation with one of these two prompts:
