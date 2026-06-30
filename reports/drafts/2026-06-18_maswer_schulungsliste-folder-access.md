@@ -5,7 +5,8 @@
 - **End users:** Vincenzo Valle, Angelika Stangenberg
 - **Technician assigned:** Sebastian Lazarte Castellón (CoolNetworks)
 - **Date opened:** 18-Jun-2026
-- **Current status:** OPEN — awaiting requester info (folder location + access level)
+- **Date closed:** 30-Jun-2026
+- **Current status:** CLOSED — both users confirmed they have access; ticket closed on customer confirmation
 
 ---
 
@@ -84,12 +85,12 @@ Soporte CoolNetworks
 
 ---
 
-## Current status & pending
+## Resolution
 
-**Status:** OPEN — customer reply sent (info request), awaiting response.
+**Status:** CLOSED (30-Jun-2026) — the requester confirmed that both users (Valle + Stangenberg) now have access to the Schulungsliste folder. Closed on customer confirmation.
 
-**To progress:**
-1. Receive folder location/path + access level from the requester.
-2. Grant permissions at N1; have both users log off/on and confirm access.
-3. If the ACL is locked → escalate to conet.de with the package above.
-4. Close on customer confirmation that both users have access.
+**Root cause: not independently verified.** Closed because the customer confirms access works, not because we verified *what* granted it. Most likely the users were added to the AD security group `MaswDEAG_Schulungsliste_RW` — which is how Maswer controls access to this folder (the technician's own account is a member). See [[maswer-access-via-ad-security-groups]]. No direct ACL editing was needed; this is group-based access, not per-folder ACL surgery as initially feared (contrast with the HR case).
+
+**Notes for similar cases:**
+- Maswer folder/resource access = membership in an AD security group (`MaswDEAG_<resource>_<R|RW>`), NOT the Security tab. To grant Schulungsliste in future: add the user to `MaswDEAG_Schulungsliste_RW`. See [[maswer-access-via-ad-security-groups]].
+- The "Drive" wording in the request stayed ambiguous (mapped share vs. Azure Files vs. Google Drive) but became moot once access was confirmed. Note `AzureFiles-Administrators` in the technician's token — "Drive" may well be Azure Files.
