@@ -56,7 +56,9 @@ Recorrido con `whoami /groups`, `Get-LocalGroupMember` y `gpresult /r` (elevado)
 
 ## Correo a conet.de (Kevin Pütz-Kurth) — versión humilde y acotada
 
-**Enfoque:** primer contacto. Lidera con el bloqueo real + una **pregunta** ("¿cómo está pensado que IT eleve?"), NO con exigencias técnicas. No prescribe a conet cómo configurar su AD; los temas de seguridad se **plantean para que ellos valoren**, no se ordenan. **En inglés** (el técnico no maneja alemán — [[user-does-not-speak-german-use-english]]).
+**Contexto:** el técnico lleva ~2 meses cubriendo Maswer (en julio-2026 entra al tercero). El bloqueo se ha repetido caso a caso (HR, Schulungsliste, STAkis) y el objetivo ahora es **dejar de dar vueltas y tener una estructura clara**, no resolver un ticket aislado.
+
+**Enfoque:** lidera con el bloqueo recurrente + una **pregunta** ("¿cómo está pensado que IT eleve?"), NO con exigencias técnicas. El llevar dos meses da legitimidad para pedir que se configure bien, sin prescribir a conet cómo configurar su AD; los temas de seguridad se **plantean para que ellos valoren**, no se ordenan. **En inglés** (el técnico no maneja alemán — [[user-does-not-speak-german-use-english]]).
 
 ```
 To: Pütz-Kurth, Kevin <KPuetz-Kurth@conet.de>
@@ -65,9 +67,10 @@ Subject: Maswer AG — how should IT handle software installs? (quick call?)
 
 Hello Mr. Pütz-Kurth,
 
-I've recently taken over IT support for Maswer AG (CoolNetworks) after Oliver
-Orth left, and I'm still filling in some gaps from the handover. I could use
-your guidance on one thing that's blocking me.
+I've been handling IT support for Maswer AG (CoolNetworks) for the past couple
+of months, since Oliver Orth left. One access issue keeps coming up, and rather
+than keep working around it each time I'd like to get it set up properly. I
+could use your guidance.
 
 When I work on a user's machine remotely, I can't elevate to install software —
 a STAkis install and a Chrome install are both stuck right now. On my own

@@ -7,6 +7,8 @@ metadata:
 
 Oliver Orth **ya no trabaja en Maswer**. La transición no fue buena: no transfirió todos los accesos, en particular las cuentas con permiso de administrador que se usaban para elevar instalaciones / cambios de sistema en los equipos Maswer (UAC). Ese rol **es ahora trabajo del usuario**.
 
+**Timeline:** el usuario lleva cubriendo el IT de Maswer desde **~mayo 2026** (en julio-2026 entra a su tercer mes). Tras dos meses chocando con lo mismo caso a caso (HR, Schulungsliste, STAkis), su objetivo ahora es **dejar de dar vueltas y montar una estructura clara**, no resolver tickets sueltos. No es "el nuevo que tantea" → tiene legitimidad para pedir que se configure bien.
+
 **Why:** El usuario lo dijo directamente: "es mi trabajo ahora, él debería haberme dado todos los accesos porque ya no trabaja en Maswer... la idea es ya no molestar a Oliver." Esto **anula** la suposición anterior (memoria previa `oliver-owns-admin-install-accounts`) de que Oliver era el gatekeeper al que se le pedían credenciales/procedimientos.
 
 **Alcance real del hueco (importante):** en **su propia máquina el usuario SÍ puede instalar todo** (es admin local ahí). El bloqueo aparece solo cuando trabaja sobre **las máquinas de OTROS usuarios de Maswer** (p. ej. el portátil del solicitante de STAkis), donde su cuenta no está en el grupo Administradores local y el UAC lo frena. Por tanto lo que falta no es "una cuenta admin" genérica, sino **derechos de admin local que apliquen a todos los endpoints del dominio MASWER** (cuenta de dominio en el grupo Administradores local de los equipos, vía GPO/Restricted Groups, o Domain Admin).

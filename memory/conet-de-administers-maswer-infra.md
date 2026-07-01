@@ -11,4 +11,6 @@ conet.de administers Maswer's infrastructure (file servers, folder permissions/A
 
 **Why:** Maswer's servers are not administered by CoolNetworks. CoolNetworks handles client-side support; conet.de holds the privileged accounts over the actual infrastructure.
 
-**How to apply:** For any request touching server-side ACLs / file-server permissions on Maswer (e.g. the HR folder access for Vincenzo Valle + Angelika Stangenberg), the escalation path is a request to conet.de with: real UNC path (`\\server\HR`), users, access level, and what was already tried. Note [[oliver-left-maswer-no-handover]] — Oliver Orth *used to* hold those admin accounts / appears as folder owner (Besitzer) on the Maswer side, but he has left Maswer and is no longer a path; conet holds the admin accounts now.
+**Contacto:** Kevin Pütz-Kurth — `KPuetz-Kurth@conet.de`.
+
+**How to apply:** For any request touching server-side ACLs / file-server permissions on Maswer (e.g. the HR folder access for Vincenzo Valle + Angelika Stangenberg), OR cross-endpoint local-admin rights for elevation on other users' machines ([[oliver-left-maswer-no-handover]]), the escalation path is a request to Kevin Pütz-Kurth at conet.de with: real UNC path (`\\server\HR`) / target machines, users, access level, and what was already tried. Note [[oliver-left-maswer-no-handover]] — Oliver Orth *used to* hold those admin accounts / appears as folder owner (Besitzer) on the Maswer side, but he has left Maswer and is no longer a path; conet holds the admin accounts now.

@@ -62,11 +62,16 @@ Va de "quién entra" → "con qué equipo" → "protegido cómo" → "qué vigil
 > Formato: **Abre así** (ruta de clics) · **Di esto** (frase) · **Si preguntan…** · **Trampa a evitar**.
 
 ### 1. Microsoft 365 / Entra ID
-**Abre así:** `entra.microsoft.com` → *Identidad > Usuarios > Todos los usuarios*. Luego *Identidad > Roles y administradores > Administrador global*. Luego *Protección > Acceso condicional > Directivas*. Luego *Identidad > Supervisión > Registros de inicio de sesión*.
-**Di esto:** "Toda identidad pasa por Entra con MFA obligatorio vía Acceso Condicional. Los administradores globales son [N] y todos con MFA. Las bajas se desactivan el mismo día — te enseño una reciente."
-**Si preguntan "un exempleado":** abre el usuario dado de baja → muestra *Cuenta bloqueada = Sí* + fecha + el ticket de baja.
+**Abre así (Entra):** `entra.microsoft.com` → *Identidad > Usuarios > Todos los usuarios*. Luego *Identidad > Roles y administradores > Administrador global*. Luego *Protección > Acceso condicional > Directivas*. Luego *Identidad > Supervisión > Registros de inicio de sesión*.
+**Abre así (Centro de administración M365 — `admin.microsoft.com`, por si el auditor lo pide desde aquí):**
+- **Altas/bajas:** 👤 *Usuarios > Usuarios activos* (crear/editar/gestionar). Un exempleado: 👤 *Usuarios > Usuarios eliminados* (o el usuario bloqueado en *Usuarios activos*).
+- **Admins globales:** 🏷️ *Roles > Asignaciones de roles* — ⚠️ **la sección "Roles" solo aparece tras pulsar "Mostrar todo"** al fondo del menú izquierdo; tenlo localizado para no titubear en vivo.
+- **Grupos de acceso:** 👥 *Teams y grupos > Grupos y equipos activos*.
+- **Salto a portales:** 🌐 *Centros de administración* (Mostrar todo) → *Identidad* (Entra), *Seguridad* (Defender), *Exchange*, *SharePoint*, *Intune*.
+**Di esto:** "Toda identidad pasa por Entra con MFA obligatorio vía Acceso Condicional. Los administradores globales son [N] y todos con MFA. Las bajas se desactivan el mismo día — te enseño una reciente. La gestión diaria de usuarios y roles la hago desde el Centro de administración de M365 y salto a Entra para el detalle de identidad."
+**Si preguntan "un exempleado":** abre el usuario dado de baja → muestra *Cuenta bloqueada = Sí* + fecha + el ticket de baja. (En M365: 👤 *Usuarios > Usuarios eliminados* conserva el registro.)
 **Si preguntan "usuarios sin MFA":** abre la directiva de Acceso Condicional que fuerza MFA a todos / o *Sign-in logs* filtrando por MFA.
-**Trampa a evitar:** que aparezca un admin global de más o un invitado externo olvidado. **Revísalo HOY.**
+**Trampa a evitar:** que aparezca un admin global de más o un invitado externo olvidado (👤 *Usuarios > Usuarios invitados*). **Revísalo HOY.** Y no te quedes buscando "Roles" en el menú de M365: recuerda que está **detrás de "Mostrar todo"**.
 
 ### 2. Active Directory
 **Abre así:** RDP/consola → **ADUC** → unidad de grupos privilegiados (*Domain Admins*, *Enterprise Admins*). Luego filtro de cuentas deshabilitadas. Luego `gpmc.msc` → política de contraseñas. Luego propiedades de la carpeta `QM` → *Seguridad* → grupo `MaswES_QM_RW`.

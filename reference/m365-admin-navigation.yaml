@@ -1,0 +1,160 @@
+# Mapa de navegación del Centro de administración de Microsoft 365
+# Uso: referencia para guiar a usuarios por el menú izquierdo del portal admin.microsoft.com
+# Nota: los ítems con `requires_show_all: true` solo aparecen tras pulsar "Mostrar todo" al fondo del menú.
+
+portal: Centro de administración de Microsoft 365
+url: https://admin.microsoft.com
+menu:
+  - id: inicio
+    icon: "🏠"
+    label: Inicio
+    description: Página principal con resumen del estado del tenant.
+
+  - id: copilot
+    icon: "🤖"
+    label: Copilot
+    children:
+      - Información general
+      - Cowork
+      - Conectores
+      - Indicaciones
+      - Búsqueda
+      - Configuración
+      - Cost management
+
+  - id: agentes
+    icon: "🔧"
+    label: Agentes
+    children:
+      - Información general
+      - Todos los agentes
+      - Herramientas
+      - Configuración
+
+  - id: usuarios
+    icon: "👤"
+    label: Usuarios
+    children:
+      - label: Usuarios activos
+        note: Aquí se crean, editan y gestionan usuarios.
+      - Contactos
+      - Usuarios invitados
+      - Usuarios eliminados
+
+  - id: dispositivos
+    icon: "💻"
+    label: Dispositivos
+    children:
+      - Dispositivos activos
+      - Autopilot
+
+  - id: teams-y-grupos
+    icon: "👥"
+    label: Teams y grupos
+    children:
+      - Grupos y equipos activos
+      - Directivas
+      - Grupos eliminados
+      - Buzones compartidos
+
+  - id: roles
+    icon: "🏷️"
+    label: Roles
+    requires_show_all: true
+    children:
+      - Asignaciones de roles
+      - Unidades administrativas
+
+  - id: recursos
+    icon: "🏢"
+    label: Recursos
+    requires_show_all: true
+    children:
+      - Salas y equipos
+      - Sitios
+
+  - id: facturacion
+    icon: "💰"
+    label: Facturación
+    children:
+      - Comprar servicios
+      - Sus productos
+      - Licencias
+      - Solicitudes de licencia
+      - Facturas y pagos
+      - Cuentas de facturación
+      - Métodos de pago
+      - Notificaciones de facturación
+      - Pago por uso
+      - Administración de costos
+
+  - id: soporte-tecnico
+    icon: "🎧"
+    label: Soporte técnico
+    requires_show_all: true
+    children:
+      - Ayuda y soporte técnico
+      - Ver solicitudes de servicio
+      - Asistencia de Microsoft Surface
+
+  - id: configuracion
+    icon: "⚙️"
+    label: Configuración
+    requires_show_all: true
+    children:
+      - Dominios
+      - Búsqueda e inteligencia
+      - Configuración de la organización
+      - Copia de seguridad de Microsoft
+      - Aplicaciones integradas
+      - Errores de sincronización de directorio
+      - Viva
+      - Relaciones con partners
+      - Microsoft Edge
+
+  - id: instalacion
+    icon: "🔌"
+    label: Instalación
+    description: Asistentes y guías de configuración inicial.
+
+  - id: informes
+    icon: "📊"
+    label: Informes
+    requires_show_all: true
+    description: Métricas de uso, actividad y adopción.
+
+  - id: mantenimiento
+    icon: "🔧"
+    label: Mantenimiento
+    requires_show_all: true
+    description: Estado del servicio e historial de incidencias.
+
+  - id: centros-de-administracion
+    icon: "🌐"
+    label: Centros de administración
+    description: Accesos directos a otros portales especializados con más detalle.
+    children:
+      - label: Seguridad
+        portal: Microsoft Defender
+      - label: Microsoft Purview
+        portal: Cumplimiento y datos
+      - label: Microsoft Intune
+        portal: Gestión de dispositivos
+      - label: Identidad
+        portal: Azure AD / Entra
+      - label: Azure
+        portal: Portal de Azure
+      - label: Exchange
+        portal: Correo y buzones
+      - label: SharePoint
+        portal: Sitios y documentos
+      - label: Teams
+        portal: Configuración avanzada de Teams
+      - label: Power Platform
+        portal: Power Platform
+      - Todos los centros de administración
+
+tips:
+  - Las secciones "Roles", "Recursos", "Soporte técnico", "Configuración", "Informes" y "Mantenimiento" solo aparecen tras pulsar "Mostrar todo" al fondo del menú.
+  - El menú izquierdo es colapsable (icono ☰ arriba a la izquierda).
+  - Puedes personalizar la navegación y anclar las secciones más usadas con el icono 📌.
