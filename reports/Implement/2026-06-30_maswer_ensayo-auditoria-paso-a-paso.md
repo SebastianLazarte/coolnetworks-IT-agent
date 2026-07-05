@@ -74,10 +74,69 @@ Va de "quién entra" → "con qué equipo" → "protegido cómo" → "qué vigil
 **Trampa a evitar:** que aparezca un admin global de más o un invitado externo olvidado (👤 *Usuarios > Usuarios invitados*). **Revísalo HOY.** Y no te quedes buscando "Roles" en el menú de M365: recuerda que está **detrás de "Mostrar todo"**.
 
 ### 2. Active Directory
-**Abre así:** RDP/consola → **ADUC** → unidad de grupos privilegiados (*Domain Admins*, *Enterprise Admins*). Luego filtro de cuentas deshabilitadas. Luego `gpmc.msc` → política de contraseñas. Luego propiedades de la carpeta `QM` → *Seguridad* → grupo `MaswES_QM_RW`.
-**Di esto:** "Los grupos privilegiados tienen miembros mínimos. Las bajas se deshabilitan. El acceso a carpetas es por grupo, con mínimo privilegio — ejemplo: la carpeta QM solo la ve el grupo MaswES_QM_RW."
+**Abre así (paso a paso, narrando cada uno):**
+1. RDP a la consola → abre **ADUC** (`dsa.msc`).
+2. **Grupos privilegiados:** ve a la OU/contenedor de grupos → abre *Domain Admins* y *Enterprise Admins* → pestaña *Miembros*. Enseña que la lista es **corta y nominal** (nada de cuentas genéricas ni de más).
+3. **Cuentas de baja:** *Users* → menú *Ver > Filtro* (o *Buscar*) para listar **cuentas deshabilitadas** → abre una baja reciente → pestaña *Cuenta*: verás *"La cuenta está deshabilitada"* + a través del ticket, la fecha.
+4. **Política de contraseñas:** `gpmc.msc` → *Default Domain Policy* (o la GPO de contraseñas) → *Configuración del equipo > Directivas > Configuración de Windows > Directivas de cuenta > Directiva de contraseñas* → enseña longitud mínima, complejidad, caducidad, historial y bloqueo.
+5. **Acceso a carpetas (DACL = quién puede):** propiedades de la carpeta `QM` → *Seguridad* → verás el grupo `MaswES_QM_RW` (y *Avanzada* para ver el detalle de permisos heredados). Este es el control de **acceso**.
+**Di esto:** "Los grupos privilegiados tienen miembros mínimos y nominales. Las bajas se deshabilitan el mismo día. El acceso a carpetas es **por grupo de seguridad, con mínimo privilegio** — ejemplo: la carpeta QM solo la ve el grupo MaswES_QM_RW."
 **Si preguntan "¿cuándo revisaste estos accesos?":** muestra el **registro de revisión de accesos con fecha** (el que preparas hoy).
-**Trampa a evitar:** cuentas inactivas sin deshabilitar. Y NO abras el file server por la parte de auditoría/SACL: ahí tienes el hallazgo conocido → si surge, ve a la frase preparada (bloque 7).
+**Trampa a evitar:** cuentas inactivas sin deshabilitar; miembros de más en grupos privilegiados. **Revísalo HOY.**
+
+#### 2a. Modelo de administración por niveles (tiering) — ⭐ tu punto fuerte, enséñalo
+Maswer tiene la OU `Administratoren` segmentada en niveles, con un grupo de seguridad por nivel. **Ábrelo y nárralo** — demuestra madurez:
+
+| Nivel (OU) | Grupo | Miembros actuales | Alcance |
+|---|---|---|---|
+| **adm0** — Tier 0 | `adm0-Administrators` | Alejandro Jasso, Oliver Orth, Conet Admin, localadmin | Dominio / DCs |
+| **adm1** — Tier 1 | `adm1-Administrators` | Admin1_OOrth, Oliver Orth, Conet Admin | Servidores |
+| **adm2** — Tier 2 | `adm2-Administrators` | Alejandro Jasso, Miguel Rubira Garcia, Oliver Orth | Puestos |
+
+Grupos por rol adicionales: `AzureFiles-Administrators`, `Files-Administrators`, `MFA-Administrators`.
+
+**Di esto:** *"La administración está segmentada por niveles: adm0 para dominio, adm1 para servidores, adm2 para puestos, cada uno con su grupo. Cada admin usa una cuenta dedicada según el nivel, nunca su cuenta de diario. El acceso privilegiado es nominal y mínimo."*
+
+**Verifica HOY (antes del directo):**
+- [ ] Que `adm1-Administrators` y `adm2-Administrators` **NO** son miembros de *Domain Admins* (si lo fueran, rompe el tiering — es lo primero que mira el auditor).
+- [ ] Que cada persona tiene **cuenta dedicada por nivel** y no es la misma cuenta reutilizada entre Tier 0/1/2. Ojo a la **nomenclatura inconsistente** (`Admin1_OOrth` correcto vs `Oliver Orth` a secas) → ten claro cuál es cuál. Renombrar a patrón único = mejora post-auditoría, no la toques ahora.
+- [ ] Que Alejandro Jasso, Oliver Orth y Miguel Rubira García son admins **actuales**.
+
+#### 2c. Justificación de Domain Admins (rellena y llévala impresa)
+Domain Admins hereda a los adm0 + varias cuentas de servicio. Ten una frase por miembro para no titubear:
+
+| Miembro | Tipo | Justificación / acción |
+|---|---|---|
+| `adm0-Administrators` (grupo) | Grupo Tier 0 | Cuentas humanas de dominio (Alejandro Jasso, Oliver Orth) + Conet + localadmin. |
+| `Administrator` | Built-in | Cuenta de emergencia, uso controlado, no de diario. |
+| `conetadmin` / Conet Admin | Humana (conet.de) | Operador de la infraestructura; acceso contractual documentado. |
+| `localadmin` | Genérica | ¿Uso concreto? Justificar o retirar. **Revisar HOY.** |
+| `ADMadfs` | Servicio (AD FS) | 🔴 Cuenta de servicio en DA — mejora planificada: sacar de DA con privilegio mínimo (cambio con ventana + conet.de). |
+| `SVC Kerberos…` | Servicio (AD FS/AADConnect) | 🔴 Ídem — mejora continua planificada. |
+| `SVCAdfsProxy` | Servicio (AD FS) | 🔴 Ídem — mejora continua planificada. |
+| `tplink` | ¿? | 🔴🔴 **Sin justificar.** Investigar hoy (creación, último logon, propósito). Si no se explica → **escalar a N2 Cybersecurity**, no exhibir. |
+
+**Frase para el directo si abren Domain Admins:** *"Conviven admins humanos por nivel y algunas cuentas de servicio heredadas de AD FS/Azure AD Connect. Está identificado como mejora: separarlas de Domain Admins con privilegio mínimo, cambio planificado con conet.de. Cada miembro tiene justificación documentada."*
+
+#### 2b. Cómo mostrar el "registro de archivos" (auditoría de accesos/borrados)
+> Ojo: el auditor puede pedir dos cosas distintas y conviene no confundirlas.
+> - **Permisos (DACL) = *quién puede* acceder** → eso es el paso 5 de arriba (*Seguridad* de la carpeta).
+> - **Registro/auditoría (SACL + log) = *quién hizo qué* (accedió, borró, cambió permisos)** → es lo de aquí abajo.
+
+**Cómo se muestra (donde SÍ está activado):**
+1. **Que la auditoría esté habilitada por GPO:** `gpmc.msc` → GPO del file server → *Configuración del equipo > Directivas > Configuración de Windows > Configuración de seguridad > Configuración de directiva de auditoría avanzada > Acceso a objetos* → *Auditar el sistema de archivos = Correcto/Erróneo*.
+2. **Que la carpeta tenga SACL:** propiedades de la carpeta → *Seguridad > Avanzada > pestaña Auditoría* → aquí se define **qué se registra** (p. ej. *Todos → Eliminar / Cambiar permisos*). Si esta pestaña está vacía, **no hay registro** de esa carpeta.
+3. **Ver los eventos:** en el file server, *Visor de eventos* (`eventvwr.msc`) → *Registros de Windows > Seguridad* → *Filtrar registro actual* por Id. de evento:
+   - **4663** — acceso a un objeto (incluye lectura/escritura/borrado efectivo)
+   - **4660** — objeto eliminado
+   - **4670** — cambio de permisos
+   - **4656 / 4658** — apertura/cierre de identificador
+   Enseña un evento y lee: **quién** (cuenta), **qué** (archivo/carpeta), **cuándo** y **qué acción**.
+
+**⚠️ Realidad de Maswer (hallazgo conocido — NO lo abras tú por sorpresa):** en el file server que opera **conet.de**, la carpeta afectada **no tenía la SACL activada** y el **log de seguridad solo retiene unos días**. Si el auditor entra por aquí (borrados, retención, "enséñame quién borró X"):
+- **No improvises ni lo escondas.** Ve directo a la **frase preparada del bloque 9** y enseña el informe + el correo de escalado a conet.de.
+- Encuádralo como **mejora continua documentada**: corrección propuesta = activar SACL en la carpeta + ampliar la retención del log de seguridad y reenviarlo a un colector (Wazuh).
+**Trampa a evitar:** intentar demostrar en vivo un registro de borrados en la carpeta del hallazgo (no lo hay todavía). Muestra el mecanismo donde SÍ funciona, y para el punto débil usa la frase preparada.
 
 ### 3. Sophos Central (AV/EDR)
 **Abre así:** `central.sophos.com` → *Dashboard* (resumen de salud) → *Devices > Computers/Servers* (ordena por *Last activity*) → *Endpoint Protection > Policies* → *Alerts*.

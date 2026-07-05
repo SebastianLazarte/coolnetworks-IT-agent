@@ -8,7 +8,7 @@
 
 ## Petición original
 
-Miguel reporta por correo que le faltan **dos archivos Excel** que deberían estar en la unidad `R:` (etiquetada *Maswer Spain S.L.*), ruta `R:\QM\ISO 14001 Spain`:
+**Silvia Buesa** (usuaria de Maswer Spain) reporta por correo (dirigido a Miguel / IT-Support, 29/06/2026 11:31) que le faltan **dos archivos Excel** que deberían estar en la unidad `R:` (etiquetada *Maswer Spain S.L.*), ruta `R:\QM\ISO 14001 Spain`:
 
 - `IntAudit_ES`
 - `H_Necesidades_de_formación_ 2026`
@@ -20,7 +20,7 @@ Solo aportó un *screenshot* de la barra de direcciones del Explorador (unidad m
 ## Resumen ejecutivo
 
 - **`IntAudit_ES_20260514.xlsx`** (y su `Copia de…`) → estaba borrado. **Recuperado** desde copia instantánea y restaurado en su carpeta.
-- **`H_Necesidades_de_formación_2026.xlsx`** → **nunca se borró**; estaba en la subcarpeta `Formación`, un nivel por debajo de donde Miguel lo buscaba.
+- **`H_Necesidades_de_formación_2026.xlsx`** → **nunca se borró**; estaba en la subcarpeta `Formación`, un nivel por debajo de donde Silvia lo buscaba.
 - **Quién lo borró:** no determinable (sin auditoría en la carpeta + log de seguridad de solo 6 días). **Cuándo:** acotado a la tarde del **15/06/2026, entre 12:00 y 18:00**.
 
 ---
@@ -108,10 +108,10 @@ Ubicación final: `\\MDERZFIL001\maswer\maswerspainsl\QM\ISO 14001 Spain\` (= `R
 
 ---
 
-## Respuesta a Miguel (borrador)
+## Respuesta a Silvia (borrador)
 
 ```
-Hola Miguel,
+Hola Silvia,
 
 Ya está resuelto:
 
