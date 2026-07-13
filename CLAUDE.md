@@ -24,6 +24,7 @@ Read `core/examples.md` for tone and output format the first time.
 | Escalation decision | reference/ | reference/CONTEXT.md → escalation-criteria.md |
 | Write a case / executive report | reports/ | reports/CONTEXT.md |
 | Recall client / account facts | memory/ | memory/MEMORY.md (index) |
+| Act on a specific Maswer server (RDP, sync, DC, Exchange, VPN, file server) | memory/ | maswer-servers-inventory.md → "Qué servidor para qué tarea" |
 
 ## Folder structure
 ```

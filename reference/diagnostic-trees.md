@@ -8,6 +8,8 @@ Concrete steps for the most frequent incident types at N1. Each tree is designed
 
 ## 1. Sign-in / account problems
 
+> **Server target (Maswer):** account/AD/sync actions → see `memory/maswer-servers-inventory.md` → "Qué servidor para qué tarea" (DCs `MDERZADC003/004`, sync `MEUAZAC011`, mailbox `MEUAZEX001`).
+
 ### Tree
 
 1. **Can the user sign in from another device or from the web portal?**
@@ -33,6 +35,8 @@ Concrete steps for the most frequent incident types at N1. Each tree is designed
 ---
 
 ## 2. Connectivity / network
+
+> **Server target (Maswer):** VPN/perimeter actions → see `memory/maswer-servers-inventory.md` → "Qué servidor para qué tarea" (firewall/VPN EU `MEUAZFW001`, US `MUSAZFW001`).
 
 ### Tree
 

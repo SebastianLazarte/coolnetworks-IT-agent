@@ -13,3 +13,5 @@
 - [Remote access: TeamViewer fails → AnyDesk fallback](remote-access-teamviewer-fails-fallback-anydesk.md) — ad-hoc remote support tooling on Maswer; goal is to standardize on one licensed unattended tool
 - [Maswer access via AD security groups](maswer-access-via-ad-security-groups.md) — folder/resource access = membership in Masw*/Nexpro* groups (_R/_RW), NOT per-folder ACLs; grant by adding to the group
 - [Maswer AD domain infra](maswer-ad-domain-infra.md) — domain intern.maswer.com, DC MDERZADC003, hybrid Entra, OU + network-drive map; no Restricted Groups GPO for local admin
+- [Maswer servers inventory](maswer-servers-inventory.md) — on-prem + Azure VM fleet, roles confirmed via Defender Device Role tag, some fields pending
+- [Maswer network topology](maswer-network-topology.md) — full WAN diagram: RZ FFM hub, all sites (DE/ES/MX/US), Azure DE/US, firewall naming convention
