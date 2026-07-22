@@ -16,3 +16,5 @@
 - [Maswer AD domain infra](maswer-ad-domain-infra.md) — domain intern.maswer.com, DC MDERZADC003, hybrid Entra, OU + network-drive map; no Restricted Groups GPO for local admin
 - [Maswer servers inventory](maswer-servers-inventory.md) — on-prem + Azure VM fleet, roles confirmed via Defender Device Role tag, some fields pending
 - [Maswer network topology](maswer-network-topology.md) — full WAN diagram: RZ FFM hub, all sites (DE/ES/MX/US), Azure DE/US, firewall naming convention
+- [STarkis = STAkis Profi / STAHLGRUBER (Calden)](starkis-external-vendor-calden.md) — 3rd-party app; client on network drive; issues = open a vendor case (English) after our-side pre-checks; NOT an internal N2/N3 escalation
+- [Maswer Calden contacts](maswer-calden-contacts.md) — Vincenzo = requester; Joachim non-technical, reach via Vincenzo; Jan Lukas direct; service.calden = shared mailbox
