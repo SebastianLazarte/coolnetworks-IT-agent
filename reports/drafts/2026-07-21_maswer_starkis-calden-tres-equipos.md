@@ -78,6 +78,31 @@ CoolNetworks Support
 
 ---
 
+## Propuesta de solución
+
+El patrón (OK en el "central computer", parcial en Joachim, nulo en Jan Lukas) con un cliente que corre desde la **unidad de red** (`KWB_STAKIS_NET_CLIENT.EXE`, "Netzwerklaufwerk") apunta a que la diferencia es **por máquina/usuario**, no del software en sí. En Maswer tanto el acceso al cliente como el mapeo de esa unidad se gobiernan por **grupo de seguridad AD** (mapeo por GPO `Laufwerk-*`, User Configuration — ver [[maswer-ad-domain-infra]] y [[maswer-access-via-ad-security-groups]]). Por eso la mayor parte se resuelve **del lado servidor**, sin depender de los usuarios.
+
+### Hipótesis de causa raíz (ordenadas por probabilidad)
+1. **Acceso/mapeo de la unidad de red por grupo AD incompleto.** Jan Lukas (nulo) probablemente no está en el grupo que le mapea la unidad de STAkis y/o da acceso al cliente. Joachim (parcial) sí abre el cliente pero le falta un grupo/permiso para ciertos módulos o para la BD central.
+2. **Elevación / UAC.** STAkis puede exigir permisos locales al arrancar o escribir su config. Precedente directo: el caso del 23-jun bloqueó en `MASWER\localadmin` **error 1385**. Sin admin local en las máquinas de usuario (sin traspaso de Oliver — ver [[oliver-left-maswer-no-handover]]), esto lo tiene que conceder [[conet-de-administers-maswer-infra]].
+3. **Versión del cliente distinta** a la del "central computer".
+
+### Plan de resolución (lado servidor primero)
+1. Identificar **qué usuario y equipo** es el "central computer" que funciona, y sacar su membresía de grupos AD + qué grupo `Masw*` le mapea la unidad de STAkis (DC `MDERZADC003`, dominio `intern.maswer.com`).
+2. Comparar con `Get-ADPrincipalGroupMembership` la membresía de **Jan Lukas** y **Joachim** contra ese usuario de referencia. Los grupos que falten → **añadir al usuario al grupo** (no tocar ACLs). Si no tengo permiso para gestionar el grupo, solicitarlo a conet.de (Kevin Pütz-Kurth).
+3. Confirmar que la **GPO `Laufwerk-*`** mapea la unidad de STAkis en las cuentas de Calden (filtrado por ese grupo).
+4. Si el cliente arranca pero pide **elevación (error 1385)** → gestionar admin local de esas máquinas vía conet.de (avisar que puede disparar la alerta de Defender ya conocida no aplica aquí; es UAC local).
+5. Descartado lo anterior y con **errores + versiones documentados por máquina**, abrir caso con **STAHLGRUBER** en inglés (`stakis.support@stahlgruber.de` · hotline `0800 5782-547`).
+
+### Acciones puntuales con usuarios (mínimas, solo para evidencia)
+- **Jan Lukas** (contacto directo): captura del **error exacto** al abrir STAkis + versión del cliente que aparece.
+- **Joachim** (vía Vincenzo): **qué funciones** concretas fallan. No agendar sesión guiada hasta tener el error; casi todo se compara del lado servidor.
+
+### Resultado esperado
+La mayoría de los casos de este tipo se cierran en el paso 2–3 (alta en el grupo AD correcto) sin intervención del proveedor. El caso con STAHLGRUBER queda como plan B solo si, con acceso y versión correctos, el cliente sigue fallando contra la instancia/BD central.
+
+---
+
 ## ¿Escalar?
 
 **No a N2/N3.** Es coordinación con un **proveedor externo (STAHLGRUBER)** tras las comprobaciones de nuestro lado. Escalar a N2 Systems solo si se confirma que el bloqueo es de infraestructura Maswer (unidad de red, permisos AD, elevación/UAC).
@@ -86,13 +111,14 @@ CoolNetworks Support
 
 ## Estado actual y pendientes
 
-**Estado:** ABIERTO · en investigación.
+**Estado:** ABIERTO · con propuesta de solución (ver sección "Propuesta de solución") · pendiente de ejecución.
 
-**Próximos pasos:**
-1. Capturar el error exacto en el equipo de Jan Lukas (contacto directo).
-2. Identificar qué funciones fallan en el de Joachim (vía Vincenzo).
-3. Descartar causas locales (versión / unidad de red / permisos AD / elevación).
-4. Abrir caso con STAHLGRUBER con la evidencia recopilada.
+**Próximos pasos (según el plan de resolución):**
+1. Sacar la membresía de grupos AD del usuario del "central computer" (referencia) en `MDERZADC003`.
+2. Comparar Jan Lukas y Joachim contra esa referencia (`Get-ADPrincipalGroupMembership`) y añadir a los grupos `Masw*` que falten; si no puedo gestionarlos, pedir a conet.de.
+3. Verificar mapeo de la unidad de STAkis por GPO `Laufwerk-*` en las cuentas de Calden.
+4. En paralelo, pedir a Jan Lukas (directo) el error exacto + versión, y a Joachim (vía Vincenzo) qué funciones fallan.
+5. Si tras acceso/versión correctos sigue fallando → abrir caso con STAHLGRUBER en inglés.
 
 **Notas:**
 - Sin tocar los equipos más allá de la captura de errores.

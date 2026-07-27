@@ -14,7 +14,7 @@ Inventario construido a partir de dos capturas (consola de inventario de servido
 |---|---|---|
 | Forzar sync AD→M365 | `MEUAZAC011` | RDP → `Start-ADSyncSyncCycle -PolicyType Delta` — ver `reference/runbook-altas-usuarios-y-permisos.md` y [[maswer-ad-domain-infra]] |
 | Crear/editar usuario, buzón (nombre/alias), grupos AD | DC on-prem `MDERZADC003` / `MDERZADC004` (ADUC/RSAT) | AD on-prem = master de identidad; Exchange híbrido gobierna el alias en AD, no en M365 — ver [[maswer-ad-domain-infra]] |
-| Exchange híbrido (buzones, colas) | `MEUAZEX001` | rol ExchangeServer confirmado en Defender |
+| Exchange híbrido (buzones, colas) | ⚠️ **NO es `MEUAZEX001`** | Verificado en la máquina (22-jul-2026): sin binarios (`C:\Program Files\Microsoft\Exchange Server` no existe), sin clave `HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\Setup`, sin servicios `MSExchange*`. Los cmdlets `*-RemoteMailbox` **no existen ahí**. El rol "ExchangeServer" venía de la etiqueta Defender, no de la máquina. Direcciones de correo → editar `proxyAddresses` en AD (`MDERZADC003`) con `-Add`/`-Remove`, nunca `-Replace` de la colección, + sync. Pendiente: `Get-ADObject -LDAPFilter '(objectClass=msExchExchangeServer)'` para ver si hay Exchange en el bosque |
 | DNS / autenticación de dominio | `MDERZADC003`/`MDERZADC004` (on-prem), `MEUAZDC011` (EU), `MUSAZDC011` (US) | DCs por región |
 | VPN / firewall EU | `MEUAZFW001` (Sophos SSL VPN, pública 108.142.212.203) | remote-access VPN de la región EU — ver [[maswer-network-topology]] |
 | VPN / firewall US | `MUSAZFW001` (pública 104.210.193.97) | firewall/VPN de la filial US |
