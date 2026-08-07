@@ -6,8 +6,8 @@
 - **Solicitante / usuario final:** Angelika Stangenberg (`AStangenberg`, `angelika.stangenberg@maswer.com`) — perfil de dirección (Vorstand/Aufsichtsrat), usuaria no técnica.
 - **Canal:** Freshworks (portal), agente asignado en el hilo "Miguel Ángel Rubira García".
 - **Técnico:** Sebastian Lazarte (CoolNetworks — IT de Maswer)
-- **Fecha:** 23-jul-2026 (ticket abierto 21-jul-2026)
-- **Estado actual:** RESUELTO PENDIENTE DE CONFIRMACIÓN — correo localizado y sano en el servidor, en la carpeta "Steuerberater" (donde la usuaria lo movió); el fallo es el caché local (OST) de su Outlook de escritorio. **Sin pérdida de datos y sin incidente de seguridad.**
+- **Fecha:** 23-jul-2026 (ticket abierto 21-jul-2026); última actualización **27-jul-2026**
+- **Estado actual:** EN CURSO — pendiente de confirmar. El correo sigue localizado y sano en el servidor, en la carpeta "Steuerberater"; el fallo es el caché local (OST) de su Outlook de escritorio. El resync por reinicio no lo resolvió y la usuaria **no consigue completar la opción "Reparieren"** de Outlook. El 27-jul se le pidió verificar el buzón en webmail (OWA) y se le ofrecieron franjas horarias para conectarse y resolverlo con ella. **Sin pérdida de datos y sin incidente de seguridad.**
 
 ---
 
@@ -44,7 +44,10 @@ Datos aportados por la usuaria:
 | 21-jul | Abre el ticket: no ve el correo; al buscarlo y abrirlo desde resultados, error `Ein Clientvorgang ist fehlgeschlagen`. |
 | 22-jul | Aporta remitente, asunto y fecha. |
 | 23-jul | Diagnóstico. La captura ya descartaba lo obvio: Outlook **conectado** ("Verbunden mit Microsoft Exchange") y carpeta "al día" ("auf dem neusten Stand") → servidor sano, sospecha de caché local. |
-| 23-jul | Confirmado buzón en la nube (Exchange Online, datacenter EU); localizado el correo en OWA. |
+| 23-jul | Confirmado buzón en la nube (Exchange Online, datacenter EU); localizado el correo en OWA. Respuesta a la usuaria: correo a salvo en Steuerberater; reiniciar Outlook para forzar resync. |
+| 27-jul | La usuaria reenvía su **protocolo de sincronización** de Outlook (marcado "Priorität: Hoch"). El log está sano ("Vorgang abgeschlossen"); el único error real es cosmético: la carpeta compartida "Maurizio Carroccia - Kalender" da `0x80070005` (sin permisos) — ruido, no relacionado con su correo. Cola OAB `0x80040113` al final: transitorio/benigno. |
+| 27-jul | La usuaria responde que intenta la opción **"Reparieren"** (Reparar cuenta de Outlook) y **no lo consigue** ("I have no success to do this"). El resync por reinicio no ha resuelto el caché local. |
+| 27-jul | Se le envía correo pidiendo verificar el buzón en **webmail (OWA)** paso a paso y, si tampoco se ve bien ahí, conectarse para resolverlo; se proponen franjas horarias (hoy 14:00–15:00 / 16:00–17:00, mañana 09:00–10:00). |
 
 ---
 
@@ -68,7 +71,7 @@ El correo **estaba exactamente donde la usuaria lo movió**: la carpeta "Steuerb
 
 ## Estado final
 
-**RESUELTO PENDIENTE DE CONFIRMACIÓN.** Correo localizado y sano en `Steuerberater`. **Sin pérdida de datos, sin brecha de seguridad, sin incumplimiento de SLA.** No se tocó nada en producción.
+**EN CURSO — PENDIENTE DE CONFIRMACIÓN (act. 27-jul).** Correo localizado y sano en `Steuerberater`. **Sin pérdida de datos, sin brecha de seguridad, sin incumplimiento de SLA.** No se tocó nada en producción. El diagnóstico de causa raíz (caché local OST) se mantiene: el correo se ve y abre sin problema en OWA; el fallo es solo el Outlook de escritorio de la usuaria. El reinicio no bastó y la usuaria no logra completar "Reparieren", por lo que se pasa a verificar en webmail y, si procede, resolver el caché en una sesión coordinada con ella.
 
 Resolución para la usuaria:
 - **Inmediato:** puede abrir el correo ya desde webmail (`outlook.office.com` → carpeta Steuerberater).
@@ -78,7 +81,7 @@ Acceso administrativo usado y revertido:
 - Se concedió **FullAccess** temporal al buzón (`Add-MailboxPermission ... -AutoMapping:$false`) para localizar el correo en OWA, justificado por el ticket, y **se retiró al terminar** (`Remove-MailboxPermission`).
 - Queda pendiente borrar el objeto de Content Search "TuncRueckstellung" desde una sesión IPPS (`Remove-ComplianceSearch`) — limpieza menor, sin impacto.
 
-**Acción de cierre pendiente:** confirmación de Angelika de que ve/abre el correo tras reiniciar Outlook.
+**Acción de cierre pendiente:** confirmación de Angelika de que ve/abre el correo en webmail (OWA). Si en OWA está bien → el problema es solo el caché local del Outlook de escritorio; se agenda la sesión coordinada (franjas propuestas) para refrescar/recrear el perfil. Si en OWA tampoco se ve → reabrir el diagnóstico del lado servidor.
 
 ---
 
@@ -88,6 +91,21 @@ Acceso administrativo usado y revertido:
 > Found it — your email from Christina Tunc ("Rückstellungen aktueller Stand", 17 July, with the Excel attachment) is safe in your "Steuerberater" (Tax Advisor) folder.
 > You can open it right now from Outlook on the web: go to outlook.office.com, open the Steuerberater folder, and it's there.
 > On your desktop Outlook it wasn't showing because it was out of sync. Please close Outlook completely, wait about 30 seconds, and open it again — the message will appear in Steuerberater. If it still doesn't, tell me and I'll refresh it for you.
+> Best, CoolNetworks Support
+
+**Correo enviado el 27-jul** (tras "no consigo Reparieren" — se le guía a verificar en webmail y se ofrecen franjas para conectarse):
+
+> Hi Angelika,
+> Let's check your mail on the web. Please follow these steps:
+> 1. Open your internet browser (Edge, Chrome or Firefox).
+> 2. Go to this address: https://outlook.office.com
+> 3. Sign in with your normal work email address and password.
+> 4. If it asks for a verification code (on your phone or app), confirm it.
+> 5. Your mailbox will open. Check whether your messages show up there the same as usual.
+> Then tell me:
+> - If your mail looks fine on the web → we're good, nothing more to do.
+> - If it doesn't look right there either → I'll connect to your computer and fix it with you.
+> If we need to connect, here are some times that work on my side — just tell me which suits you: Today 14:00–15:00 / Today 16:00–17:00 / Tomorrow 09:00–10:00.
 > Best, CoolNetworks Support
 
 ---
