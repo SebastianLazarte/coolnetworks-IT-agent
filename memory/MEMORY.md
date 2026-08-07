@@ -18,3 +18,4 @@
 - [Maswer network topology](maswer-network-topology.md) — full WAN diagram: RZ FFM hub, all sites (DE/ES/MX/US), Azure DE/US, firewall naming convention
 - [STarkis = STAkis Profi / STAHLGRUBER (Calden)](starkis-external-vendor-calden.md) — 3rd-party app; client on network drive; issues = open a vendor case (English) after our-side pre-checks; NOT an internal N2/N3 escalation
 - [Maswer Calden contacts](maswer-calden-contacts.md) — Vincenzo = requester; Joachim non-technical, reach via Vincenzo; Jan Lukas direct; service.calden = shared mailbox
+- [Maswer "Info" mailbox is bilingual DE/ES](maswer-info-mailbox-bilingual-de-es.md) — ES team speaks no EN/DE; keep mailbox locale at es-ES, per-user fix is renamed Favorites
