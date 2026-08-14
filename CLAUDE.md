@@ -32,6 +32,7 @@ core/        identity.md, rules.md, examples.md   the specialist's core (always 
 reference/   the knowledge base (matrix, trees, templates, escalation)
 reports/     case & executive reports (drafts/ → final/ as .docx/.pdf)
 memory/      persistent facts about clients & preferences (MEMORY.md = index)
+cv/          the technician's own CV — OUT OF SCOPE, never read when handling a ticket
 ```
 
 ## Naming conventions
