@@ -12,7 +12,7 @@
 - [conet.de administers Maswer infra](conet-de-administers-maswer-infra.md) — "conet" is an external company (NOT CoolNetworks); holds admin accounts over Maswer's servers/ACLs — server-side access requests go here; contact Kevin Pütz-Kurth
 - [User does not speak German — use English](user-does-not-speak-german-use-english.md) — all vendor/customer comms (conet.de, Maswer) drafted in English, never German
 - [Remote access: TeamViewer fails → AnyDesk fallback](remote-access-teamviewer-fails-fallback-anydesk.md) — ad-hoc remote support tooling on Maswer; goal is to standardize on one licensed unattended tool
-- [Maswer access via AD security groups](maswer-access-via-ad-security-groups.md) — folder/resource access = membership in Masw*/Nexpro* groups (_R/_RW), NOT per-folder ACLs; grant by adding to the group
+- [Maswer access via AD security groups](maswer-access-via-ad-security-groups.md) — folder/resource access = membership in Masw*/Nexpro* groups (_R/_RW), NOT per-folder ACLs; folder tree ↔ group tree is 1:1; the technician CAN execute the group add himself (25-ago-2026) → `reference/runbook-acceso-carpetas-red-maswer.md`
 - [Maswer AD domain infra](maswer-ad-domain-infra.md) — domain intern.maswer.com, DC MDERZADC003, hybrid Entra, OU + network-drive map; no Restricted Groups GPO for local admin
 - [Maswer servers inventory](maswer-servers-inventory.md) — on-prem + Azure VM fleet, roles confirmed via Defender Device Role tag, some fields pending
 - [Maswer network topology](maswer-network-topology.md) — full WAN diagram: RZ FFM hub, all sites (DE/ES/MX/US), Azure DE/US, firewall naming convention

@@ -18,7 +18,7 @@ Inventario construido a partir de dos capturas (consola de inventario de servido
 | DNS / autenticación de dominio | `MDERZADC003`/`MDERZADC004` (on-prem), `MEUAZDC011` (EU), `MUSAZDC011` (US) | DCs por región |
 | VPN / firewall EU | `MEUAZFW001` (Sophos SSL VPN, pública 108.142.212.203) | remote-access VPN de la región EU — ver [[maswer-network-topology]] |
 | VPN / firewall US | `MUSAZFW001` (pública 104.210.193.97) | firewall/VPN de la filial US |
-| File server / permisos NTFS | `MDERZFIL001` | acceso por grupo de seguridad, no por ACL directa — ver [[maswer-access-via-ad-security-groups]] (rol inferido, sin tag Defender) |
+| File server / permisos NTFS | `MDERZFIL001` | **rol CONFIRMADO 25-ago-2026** (no inferido): shares `maswer\{NEXPRO,intranet,maswerag,maswerspainsl}` = unidades M/O/P/R; ruta local `D:\Shares\Maswer\<share>\…`. Acceso por grupo de seguridad, no por ACL directa. `Get-Acl` sobre UNC da "Acceso denegado" incluso con privilegio de dominio → leer la ACL vía `Invoke-Command` sobre la ruta local. Ver [[maswer-access-via-ad-security-groups]] y `reference/runbook-acceso-carpetas-red-maswer.md` |
 | Escritorios virtuales (AVD) | `MEUAZAVD-0` | propósito/usuarios **pendiente de confirmar** |
 
 ## Convención de nombres

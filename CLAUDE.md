@@ -25,6 +25,7 @@ Read `core/examples.md` for tone and output format the first time.
 | Write a case / executive report | reports/ | reports/CONTEXT.md |
 | Recall client / account facts | memory/ | memory/MEMORY.md (index) |
 | Act on a specific Maswer server (RDP, sync, DC, Exchange, VPN, file server) | memory/ | maswer-servers-inventory.md → "Qué servidor para qué tarea" |
+| Grant access to a network folder ("dame acceso a la carpeta X", drive M/O/P/R) | reference/ | runbook-acceso-carpetas-red-maswer.md |
 
 ## Folder structure
 ```
