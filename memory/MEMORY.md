@@ -19,3 +19,5 @@
 - [STarkis = STAkis Profi / STAHLGRUBER (Calden)](starkis-external-vendor-calden.md) — 3rd-party app; client on network drive; issues = open a vendor case (English) after our-side pre-checks; NOT an internal N2/N3 escalation
 - [Maswer Calden contacts](maswer-calden-contacts.md) — Vincenzo = requester; Joachim non-technical, reach via Vincenzo; Jan Lukas direct; service.calden = shared mailbox
 - [Maswer "Info" mailbox is bilingual DE/ES](maswer-info-mailbox-bilingual-de-es.md) — ES team speaks no EN/DE; keep mailbox locale at es-ES, per-user fix is renamed Favorites
+- [Diagnóstico de endpoint sin Live Response](maswer-diagnostico-endpoint-sin-live-response.md) — mapa de consolas: qué se puede leer sin tocar el equipo, qué está sin licencia (Live Response, Remediations, Device query) y la única vía para ejecutar código (Script de plataforma + Recopilar diagnósticos)
+- [OORTH = portátil heredado de Oliver Orth](oorth-portatil-heredado-stefanie-zimmermann.md) — el equipo de Stefanie Zimmermann nunca se reconstruyó ni renombró; 8 GB, 58 CVEs, sustitución solicitada el 3-sep-2026
