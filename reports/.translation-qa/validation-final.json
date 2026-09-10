@@ -1,0 +1,20 @@
+{
+  "executive": {
+    "markdown_to_word_exact_text_match": true,
+    "matched_blocks_and_cells": 416,
+    "numeric_cells_preserved": 109,
+    "tables_preserved": 6,
+    "source_sha256": "2e5474cf7c962b415349500ce021eef4e16b718df44fce76cb7133fef1e3f35d",
+    "output": "G:\\Mi unidad\\Emprendimientos\\AI_Automation_Agency\\AIClieffNotes\\WeeklyCompetions\\week3\\coolnetworks-tecnico-n1\\coolnetworks-IT-Agent\\reports\\final\\2026-09-09_maswer_it-executive-report-en.docx",
+    "md_modified_before_docx": true
+  },
+  "audit": {
+    "markdown_to_word_exact_text_match": true,
+    "matched_blocks_and_cells": 507,
+    "numeric_cells_preserved": 91,
+    "tables_preserved": 11,
+    "source_sha256": "7726db068a4f8c0deb9ef72caedd873275c8eb946cba214b88b12d8fcab107f4",
+    "output": "G:\\Mi unidad\\Emprendimientos\\AI_Automation_Agency\\AIClieffNotes\\WeeklyCompetions\\week3\\coolnetworks-tecnico-n1\\coolnetworks-IT-Agent\\reports\\especiales\\2026-09-09_maswer_unused-accounts-and-devices-audit-en.docx",
+    "md_modified_before_docx": true
+  }
+}

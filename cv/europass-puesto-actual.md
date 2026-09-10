@@ -9,11 +9,11 @@ Desde: 09/04/2026 · En curso
 
 ## Principales actividades y responsabilidades
 
-— Diseño y puesta en producción de un agente de IA para el triaje de tickets: clasifica por categoría, prioridad y SLA, propone diagnóstico, redacta la respuesta al usuario en su idioma y decide el escalado. Automatización de tareas e informes con PowerShell.
-— Responsable único del servicio TI del grupo: 14 sedes en cuatro países (Alemania, España, México y EE. UU.), del soporte a usuario a la infraestructura.
-— Administración del entorno híbrido Active Directory / Microsoft 365: controladores de dominio on-prem y en dos regiones de Azure, Entra Connect, Pass-Through Authentication en alta disponibilidad y Seamless SSO.
-— Gestión de la plataforma Sophos Central: firewalls XGS, VPN de acceso remoto y túneles IPsec site-to-site; diagnóstico hasta causa raíz de una caída total de sede (P1) y runbook de recuperación.
-— Seguridad y cumplimiento: ciclo de vida de alertas, recuperación de datos desde instantáneas VSS y preparación de evidencia para auditoría ISO/IEC 27001:2022, ENS y TISAX.
+— Automatización de tareas de administración TI con PowerShell (Active Directory, Exchange Online, informes) y desarrollo de un agente de IA para el triaje de tickets: clasificación, prioridad, SLA y respuesta al usuario.
+— Soporte y administración TI del grupo (14 sedes en cuatro países): ciclo completo del ticket en Freshdesk — triaje, prioridad, SLA, diagnóstico, resolución y cierre.
+— Administración de Active Directory y Microsoft 365 en entorno híbrido: usuarios, grupos y GPO, permisos, altas y bajas, Exchange Online, buzones compartidos, Entra ID y Entra Connect.
+— Administración de servidores Windows Server 2019/2022 y de infraestructura en Azure: parcheo mensual, copias de seguridad, recuperación de datos, inventario y documentación técnica.
+— Redes y seguridad: firewalls Sophos XGS y Sophos Central, VPN site-to-site y de acceso remoto, Microsoft Defender for Endpoint, monitorización y gestión de alertas de seguridad.
 
 ---
 

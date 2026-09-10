@@ -1,0 +1,92 @@
+{
+  "executive": {
+    "tables": [
+      [
+        5,
+        3
+      ],
+      [
+        5,
+        5
+      ],
+      [
+        7,
+        3
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        24,
+        9
+      ],
+      [
+        11,
+        7
+      ]
+    ],
+    "heading_counts": {
+      "Title": 1,
+      "Heading 2": 11,
+      "Heading 3": 4
+    },
+    "numeric_table_cells_verified": 109,
+    "size_bytes": 27826
+  },
+  "audit": {
+    "tables": [
+      [
+        7,
+        2
+      ],
+      [
+        8,
+        2
+      ],
+      [
+        8,
+        4
+      ],
+      [
+        23,
+        8
+      ],
+      [
+        8,
+        4
+      ],
+      [
+        6,
+        4
+      ],
+      [
+        8,
+        2
+      ],
+      [
+        7,
+        3
+      ],
+      [
+        7,
+        2
+      ],
+      [
+        7,
+        4
+      ],
+      [
+        7,
+        2
+      ]
+    ],
+    "heading_counts": {
+      "Title": 1,
+      "Heading 2": 12,
+      "Heading 3": 16
+    },
+    "numeric_table_cells_verified": 91,
+    "size_bytes": 35433
+  }
+}
