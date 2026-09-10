@@ -20,4 +20,8 @@ Oliver Orth **ya no trabaja en Maswer**. La transición no fue buena: no transfi
 - Cuando una tarea requiera elevar (UAC, instalaciones, cambios de sistema) en el equipo de **otro** usuario de Maswer, el camino es provisionar vía **conet.de** una cuenta de dominio con admin local en los endpoints — ver [[conet-de-administers-maswer-infra]]. (Si fuera en la propia máquina del usuario, no hay bloqueo.)
 - **Pedido concreto a conet (con evidencia):** (1) crear GPO de Grupos restringidos / GPP que añada el grupo de admin (`adm1-Administrators`) a Administradores local de todas las workstations; (2) ojo: los equipos están en `CN=Computers` (contenedor por defecto), una GPO enlazada a OU no los alcanza → enlazar bien o mover a una OU gestionada; (3) **LAPS** para reemplazar la `localadmin` compartida que conocía Oliver.
 - Relacionado con [[user-is-whole-it-stack]]: el usuario ahora también cubre lo que hacía Oliver en Maswer.
+- ⚠️ **La otra mitad de esto es una exposición de seguridad abierta:** sus cuatro cuentas admin
+  siguen habilitadas y con Domain Admin efectivo, confirmado el 14-ago y re-confirmado el
+  25-ago-2026 → [[oliver-orth-admin-accounts-still-enabled]]. Su cuenta normal es además la causa
+  del error crónico de Export en [[maswer-aad-connect-server]].
 - Caso que destapó esto: instalación de STAkis (`KWB_STAKIS_NET_CLIENT.EXE`) bloqueada en el UAC; `MASWER\localadmin` falla con error 1385 (logon type no concedido).

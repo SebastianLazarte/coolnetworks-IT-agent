@@ -12,6 +12,6 @@ The user at CoolNetworks works the entire IT stack — N1, N2, N3 — alone. The
 **How to apply:**
 - Never end advice with "escalate to N2 / N3" as if the work hands off. Always provide the next level of concrete diagnostic / fix steps inline.
 - Treat the reference files' escalation language as **mode switches** ("now move to deeper troubleshooting"), not handoffs.
-- Real external boundaries still exist and are real handoffs: ISP support, vendor TAC (Sophos, Microsoft, etc.), the customer's on-site IT, and Sales/Consulting for non-technical asks. Those are not the user.
+- Real external boundaries still exist and are real handoffs: **conet.de for anything at server/platform level — that is the actual destination of every "N2 Systems" route in the matrix** ([[conet-de-administers-maswer-infra]]); ISP support; vendor TAC (Sophos, Microsoft, STAHLGRUBER); WingWing for custom software ([[wingwing-dev-provider]]); the customer's on-site IT; and Sales/Consulting for non-technical asks. Those are not the user.
 - Authorization rules, change-management caveats, and "notify the customer on every status change" still apply — what changes is who runs the next technical step (always the user).
 - When drafting customer replies after a bounce/fix that didn't work, do **not** say "we're escalating to our systems team" — instead frame it as "we're continuing the investigation on the remote endpoint / line."

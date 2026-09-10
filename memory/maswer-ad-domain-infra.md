@@ -8,8 +8,11 @@ metadata:
 Datos de infraestructura de Active Directory de Maswer (de `gpresult /r` en el equipo del técnico, jun-2026):
 
 - **Dominio:** `intern.maswer.com` — NetBIOS `MASWER`. Nivel: Windows 2008 o posterior.
-- **Controlador de dominio:** `MDERZADC003.intern.maswer.com`.
-- **Entorno híbrido:** OU raíz `Office365`, GPO `Seamless Single Sign On`, grupos `MFA-MASWER` / `AzureFiles-Administrators` → Entra/Azure AD híbrido. Sugiere que **Intune** es viable para desplegar software (p. ej. Chrome Enterprise MSI).
+- **Controlador de dominio:** `MDERZADC003.intern.maswer.com`. Hay **4 DCs en 3 sitios**
+  (`MDERZADC003`/`004` on-prem, `MUSAZDC011` US, `MEUAZDC011` EU) y **replican en cadena, no en
+  malla** → tras cualquier alta o cambio hay que empujar el objeto con `Sync-ADObject`, ver
+  [[maswer-replicacion-dcs-azure-altas]].
+- **Entorno híbrido:** OU raíz `Office365`, GPO `Seamless Single Sign On`, grupos `MFA-MASWER` / `AzureFiles-Administrators` → Entra/Azure AD híbrido. Sugiere que **Intune** es viable para desplegar software (p. ej. Chrome Enterprise MSI). El dir-sync corre en [[maswer-aad-connect-server]] y la autenticación es **PTA, no PHS** — las contraseñas nunca salen del AD on-prem.
 - **Estructura de OUs de usuarios:** `OU=<sitio>,OU=<país>,OU=User Accounts,OU=Office365` (ej. la cuenta del técnico: `OU=HEF,OU=DE,...`).
 - **Equipos:** al menos el equipo del técnico está en el contenedor por defecto `CN=Computers` (NO en una OU gestionada de Workstations). Importante: las GPO enlazadas a OUs **no** llegan a `CN=Computers`, solo las de nivel dominio.
 

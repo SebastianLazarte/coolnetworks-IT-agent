@@ -15,4 +15,6 @@ The **STEPS FOR THE TECHNICIAN** block must be built from the real, documented M
 - Domain/DC facts from [[maswer-ad-domain-infra]]; hybrid sync via `Start-ADSyncSyncCycle` on the AAD Connect server (`reference/runbook-altas-usuarios-y-permisos.md`).
 - Backup, VPN (Sophos), topology: pull from their respective memory files rather than inventing steps.
 - Only fall back to a generic step when the environment is genuinely undocumented — and flag it **"to confirm"** so the gap is visible.
-- Format stays the full five-block triage (the user chose to keep it), but tight — one screen. The customer reply is still zero-jargon per [[customer-replies-non-technical-by-default]], and firm per [[customer-reply-only-ask-operational-info]].
+- Format stays the full five-block triage (the user chose to keep it), but tight — one screen. The customer reply is still zero-jargon per [[customer-replies-non-technical-by-default]], firm per [[reply-tone-direct-not-nice]], carries only actions per [[customer-reply-only-actionable-no-findings]], and asks only what's operationally needed per [[customer-reply-only-ask-operational-info]].
+- **The source of truth is the "Before I send — 3-point self-check" in `core/rules.md`** — read it, don't re-derive the contract from scratch. This memory explains *why* it exists; the rules file is what to apply.
+- Keep the three evidence levels visible in DIAGNOSIS ([[separate-evidence-from-pattern]]): what was observed, what is pattern, what is recalled-unverified.

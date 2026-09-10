@@ -49,7 +49,8 @@ Corresponde a la región "MU" (Maswer US) del inventario de VMs.
 ## Cómo se relaciona con el resto
 - Confirma y explica el prefijo **RZ = Rechenzentrum** en `MDERZADC003/004` y `MDERZFIL001` — ver nota actualizada en [[maswer-servers-inventory]].
 - Coincide con las entidades ya vistas en el mapa de unidades de red ([[maswer-ad-domain-infra]]): Zaragoza, Barcelona/SpainSL, Mexico, MaswerGmbH — mismo universo de sedes.
-- Los dos firewalls Sophos SSL VPN de las VMs Azure (MEUAZFW001 / MUSAZFW001, en [[maswer-servers-inventory]]) son probablemente los mismos representados aquí como el nodo de Azure Deutschland / Azure USA (a confirmar IP pública vs. las de este diagrama, que son internas).
+- Los dos firewalls Sophos SSL VPN de las VMs Azure (MEUAZFW001 / MUSAZFW001, en [[maswer-servers-inventory]]) son probablemente los mismos representados aquí como el nodo de Azure Deutschland / Azure USA (las IP de este diagrama son internas; las **públicas** y el estado de firmware están en [[maswer-vpn-sophos]]).
+- ⚠️ **Solo tres de estos firewalls están en Sophos Central.** El de Azure EU (`MEUAZFW001` / `108.142.212.203`), del que depende toda la VPN de acceso remoto europea, **no está enrolado** → punto ciego de gestión, detalle en [[maswer-vpn-sophos]].
 
 ## Pendiente de confirmar
 - Qué sitio es el firewall sin nombre en `192.168.9.1/24`

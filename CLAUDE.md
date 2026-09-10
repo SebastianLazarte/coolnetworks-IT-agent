@@ -26,6 +26,9 @@ Read `core/examples.md` for tone and output format the first time.
 | Recall client / account facts | memory/ | memory/MEMORY.md (index) |
 | Act on a specific Maswer server (RDP, sync, DC, Exchange, VPN, file server) | memory/ | maswer-servers-inventory.md → "Qué servidor para qué tarea" |
 | Grant access to a network folder ("dame acceso a la carpeta X", drive M/O/P/R) | reference/ | runbook-acceso-carpetas-red-maswer.md |
+| Create a user / alta | reference/ + memory/ | runbook-altas-usuarios-y-permisos.md, maswer-altas-password-no-expira.md, maswer-replicacion-dcs-azure-altas.md |
+| Offboard a user / "borra los accesos" | memory/ | leaver-accounts-disable-not-delete.md — **nunca borrar a petición** |
+| Decide where to escalate | memory/ | conet-de-administers-maswer-infra.md — **conet.de es el "N2 Systems" real; no existe equipo interno** |
 
 ## Folder structure
 ```
@@ -33,6 +36,8 @@ core/        identity.md, rules.md, examples.md   the specialist's core (always 
 reference/   the knowledge base (matrix, trees, templates, escalation)
 reports/     case & executive reports (drafts/ → final/ as .docx/.pdf)
 memory/      persistent facts about clients & preferences (MEMORY.md = index)
+             ÚNICA fuente de memoria — un hecho por fichero, todo indexado en MEMORY.md.
+             No mantener hechos fuera de aquí (unificado el 08-sep-2026).
 cv/          the technician's own CV — OUT OF SCOPE, never read when handling a ticket
 ```
 

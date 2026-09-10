@@ -42,6 +42,11 @@ El árbol de carpetas y el árbol de grupos son **espejo 1:1**:
 - **RESUELTO 25-ago-2026:** el técnico **sí puede gestionar estos grupos**. `Add-ADGroupMember`
   ejecutado con éxito sobre `MaswES_Projects_Operations_102030202_1_Proyectos_RW` (caso Cardozo).
   El privilegio no viene de los grupos `adm*` sino de que la cuenta de diario `IT-Support-Germany`
-  es miembro **directo de `BUILTIN\Administrators` del dominio**. **No hay que escalar las
-  peticiones de acceso a carpetas a [[conet-de-administers-maswer-infra]] por falta de permisos.**
+  es miembro **directo de `BUILTIN\Administrators` del dominio** — ver [[sebastian-ad-privileges]].
+  **No hay que escalar las peticiones de acceso a carpetas a
+  [[conet-de-administers-maswer-infra]] por falta de permisos.**
+- **Para comprobar que el permiso ha entrado** sin cerrar sesión ni tocar el equipo del usuario:
+  `klist purge` + acceso por nombre corto del servidor → [[test-token-refresh-without-logoff]].
+  Antes, replicar el cambio a los DCs de Azure ([[maswer-replicacion-dcs-azure-altas]]) o darás
+  falsos negativos.
 - Distinto del problema de **admin local para elevar UAC en máquinas de otros** ([[oliver-left-maswer-no-handover]]) — ese es local Administrators por GPO/Restricted Groups, no un grupo de recurso.

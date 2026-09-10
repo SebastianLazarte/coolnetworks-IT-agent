@@ -368,3 +368,117 @@ aparece ahí. Método correcto: leer el atributo `member` del alias directamente
 
 Impacto operativo: durante esos días se asumió que altas, bajas, resets y cambios de grupo
 debían escalarse a conet.de por falta de permisos, cuando podían ejecutarse en local.
+
+---
+
+## Segunda revisión — 04-sep-2026 ("sigue sin funcionar")
+
+Barrido completo de la cadena servidor. **Todo lo verificable desde servidor está correcto.**
+Se descarta, con evidencia, que la causa esté en AD, en la ACL, en la GPO o en el file server.
+
+### Cadena verificada — los 7 eslabones
+
+| # | Eslabón | Método | Resultado |
+|---|---|---|---|
+| 1 | Cuenta | `Get-ADUser` en los 4 DC | Habilitada, no bloqueada, **0 intentos fallidos** |
+| 2 | Pertenencia al grupo | `member` leído en `MDERZADC003` y `MEUAZDC011` | Presente, **17 miembros** en ambos → replicado |
+| 3 | Token efectivo | `tokenGroups` por LDAP en el DC | 14 entradas; incluye `MaswES_ALL_R`, `MaswES_Projects_R`, `..._Operations_R`, `..._102030202_R` y el grupo hoja |
+| 4 | Carpeta destino | `Test-Path` en `MDERZFIL001` | Existe, **3.892 elementos**, modificada hoy 09:33 |
+| 5 | ACL de la hoja | `Get-Acl` | Su grupo con *Modify* + `DeleteSubdirectoriesAndFiles` |
+| 6 | Cadena de recorrido (ABE) | `Get-Acl` en los 4 niveles padre | `MaswES_ALL_R` en `maswerspainsl`, `MaswES_Projects_R` en `Projects`, `..._Operations_R` en `Operations`, `..._102030202_R` en `102030202` → **cadena completa, ABE le mostraría la ruta** |
+| 7 | GPO de montaje de `R:` | GPO leída desde AD + `Drives.xml` en SYSVOL | Ver abajo — **correcta** |
+
+**GPO `Laufwerk-R-SpainSL`** `{43D531D0-3B0C-4AE8-A271-DD873B5A1632}`:
+- Enlazada en la **raíz del dominio**, `flags=0` (ni la parte de usuario ni la de equipo deshabilitadas).
+- Filtrado de seguridad: **`MaswES_ALL_R`** con *Apply Group Policy* — grupo que **sí está en su token** (punto 3).
+- `Drives.xml`: `action="R"` (**Replace**, no "aplicar una sola vez"), `letter="R"`, `persistent="1"`,
+  `path="\\MDERZFIL001.intern.maswer.com\maswer\maswerspainsl"`, etiqueta "Maswer Spain S.L."
+- Sin cambios desde 10-nov-2023.
+
+### Actividad del usuario (8 días)
+
+- **52 TGT**, todos con éxito, **todos los días laborables**. La cuenta pasó de dormida a uso diario.
+- **Origen: siempre `10.242.1.0/24` = pool SSL VPN de Azure Alemania.** En 8 días ha usado las IP
+  `.2 .3 .4 .5 .6 .7 .8 .9 .10` — una distinta casi cada día. **Ni una sola conexión desde la LAN
+  de una oficina.** Trabaja 100 % en remoto por VPN.
+- **6 accesos a `MDERZFIL001`, los 6 con éxito** (4624 tipo 3, Kerberos): 02-sep 13:50 y 15:28,
+  03-sep 12:41 y 16:59, 04-sep 06:05 y 11:00.
+
+**Es decir: llega al file server y entra.** Lo que no se puede saber es *a qué carpeta*, porque la
+auditoría de objetos sigue desactivada. `Get-SmbOpenFile` / `Get-SmbSession` en el momento de la
+consulta (11:11) no devolvieron nada: la sesión de las 11:00 ya se había cerrado por inactividad.
+
+### Conclusión
+
+**El problema no está en el servidor.** Está en el puesto o en la expectativa del usuario. Dos
+hipótesis vivas, ninguna verificable desde servidor:
+
+1. **`R:` no se monta porque la VPN sube después del inicio de sesión.** El montaje es una
+   preferencia de *Configuración de usuario*: se procesa al iniciar sesión. Si en ese momento el
+   equipo no tiene línea con un DC (credenciales en caché, y el cliente Sophos SSL VPN arranca
+   después), la preferencia no se aplica y `R:` no aparece. Encaja con que **todos** sus TGT
+   vengan del pool VPN y con que el primero de cada día sea muy temprano (04-sep: 05:59).
+   Atenúa la hipótesis que la acción sea *Replace* — debería reaplicarse en el refresco en
+   segundo plano (~90 min) — pero el refresco puede no dispararse si el adaptador VPN no genera
+   evento de cambio de red.
+2. **Está mirando en SharePoint / OneDrive.** La petición original decía literalmente
+   "acceso al sharepoint" y aquí **no interviene SharePoint en ningún punto**.
+
+### Lo que hace falta para cerrarlo
+
+- **Del usuario** (no obtenible desde servidor; ningún puesto expone WinRM):
+  `whoami /groups`, `net use` y `gpresult /r /scope:user` en la sesión que esté usando.
+  Si `R:` no está en `net use` pero `MaswES_ALL_R` sí está en `whoami /groups` → hipótesis 1
+  confirmada, y la solución es reconectar la VPN y ejecutar `gpupdate /force`.
+- **Cambio propuesto, pendiente de aprobación:** activar la auditoría de acceso a recursos
+  compartidos (5140/5145) en `MDERZFIL001`. Es lo único que respondería "qué carpeta abrió".
+  Es un cambio en producción y aumenta el volumen de log → **no ejecutado**, requiere ventana.
+
+### Pendiente sin resolver
+
+- **Entra ID sigue sin revisar.** Dos intentos de autenticación por código de dispositivo el
+  04-sep: el primero falló con `EventSourceException` (proceso sin consola), el segundo se lanzó
+  en consola visible y **no se completó** (`AUTH-FAILED`). Sin ello no se pueden ver dispositivos
+  registrados ni el log de inicios de sesión en la nube.
+
+### Tercera pasada — 04-sep-2026 tarde. Tres hipótesis más, las tres descartadas
+
+| Hipótesis | Comprobación | Resultado |
+|---|---|---|
+| Hay una ACE de **denegación** que el filtro anterior ocultaba | ACL completa (no filtrada) en los 6 niveles | **Ninguna ACE Deny en ningún nivel** |
+| Los **permisos de recurso compartido** bloquean por debajo de los NTFS | `Get-SmbShareAccess -Name Maswer` | `Jeder` (Todos) = **Full Control**. El share no filtra nada; mandan los NTFS |
+| La ACE del grupo es **InheritOnly** → daría acceso al contenido pero ocultaría la carpeta bajo ABE | `PropagationFlags` de cada ACE en los 5 niveles | **Todas `None`.** Ninguna es InheritOnly. Las ACE aplican a la carpeta en sí |
+
+La tercera merecía comprobarse porque explicaría exactamente el síntoma —"tiene permisos pero no
+la ve"—. **Es falsa.** El diseño de permisos está bien construido: los grupos `_R` llevan
+`InheritanceFlags = None` (solo esta carpeta), que es la forma correcta de montar una cadena de
+recorrido sin dar lectura al contenido; y el grupo hoja `..._1_Proyectos_RW` lleva
+`ContainerInherit, ObjectInherit` con propagación `None`, es decir aplica a `01 Proyectos` **y** a
+todo lo que cuelga.
+
+**Conclusión reforzada:** el permiso es correcto hasta el nivel de flags de herencia. No queda
+nada por mirar en el servidor.
+
+### Captura en vivo — sin resultado
+
+Se dejó un muestreo de `Get-SmbSession` / `Get-SmbOpenFile` cada 3 s durante 10 min sobre
+`MDERZFIL001` para capturar qué ruta abre. **Sin actividad de `NCardozo` en esa ventana** — no lo
+intentó mientras se escuchaba. Repetible en cuanto se coordine con el usuario.
+
+### La pregunta que discrimina
+
+Cuando abre `R:\Projects\Operations\102030202\`, **¿ve las otras 26 carpetas?**
+(`00_Aplicaciones Tablet`, `05 Maswer`, `13 Fucionalidad intratime`, `24 Listado equipos`…)
+
+- **Ve las demás pero no `01 Proyectos`** → es ABE contra el token de esa sesión concreta.
+- **No ve ninguna, o no existe `R:`** → la unidad no está montada; el problema es el arranque
+  de sesión sin línea con el DC, no el permiso.
+- **No sabe llegar a esa ruta** → está mirando en SharePoint, como decía la petición original.
+
+Las tres tienen solución distinta. Sin esa respuesta no se puede elegir.
+
+### Anomalía menor detectada
+
+En el token efectivo aparece **`MASWER\$DUPLICATE-695`**: un SID que no resuelve a ningún objeto,
+resto habitual de una migración o de un grupo duplicado. No afecta a este caso —
+no figura en ninguna ACL de la ruta— pero conviene mirarlo si aparece en más usuarios.

@@ -12,7 +12,7 @@ Inventario construido a partir de dos capturas (consola de inventario de servido
 
 | Tarea | Servidor(es) | Cómo / nota |
 |---|---|---|
-| Forzar sync AD→M365 | `MEUAZAC011` | RDP → `Start-ADSyncSyncCycle -PolicyType Delta` — ver `reference/runbook-altas-usuarios-y-permisos.md` y [[maswer-ad-domain-infra]] |
+| Forzar sync AD→M365 | `MEUAZAC011` | RDP → `Start-ADSyncSyncCycle -PolicyType Delta`. **Antes, `Sync-ADObject` a los DCs de Azure** o el alta no llega → [[maswer-replicacion-dcs-azure-altas]]. Detalle del servidor: [[maswer-aad-connect-server]] |
 | Crear/editar usuario, buzón (nombre/alias), grupos AD | DC on-prem `MDERZADC003` / `MDERZADC004` (ADUC/RSAT) | AD on-prem = master de identidad; Exchange híbrido gobierna el alias en AD, no en M365 — ver [[maswer-ad-domain-infra]] |
 | Exchange híbrido (buzones, colas) | ⚠️ **NO es `MEUAZEX001`** | Verificado en la máquina (22-jul-2026): sin binarios (`C:\Program Files\Microsoft\Exchange Server` no existe), sin clave `HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\Setup`, sin servicios `MSExchange*`. Los cmdlets `*-RemoteMailbox` **no existen ahí**. El rol "ExchangeServer" venía de la etiqueta Defender, no de la máquina. Direcciones de correo → editar `proxyAddresses` en AD (`MDERZADC003`) con `-Add`/`-Remove`, nunca `-Replace` de la colección, + sync. Pendiente: `Get-ADObject -LDAPFilter '(objectClass=msExchExchangeServer)'` para ver si hay Exchange en el bosque |
 | DNS / autenticación de dominio | `MDERZADC003`/`MDERZADC004` (on-prem), `MEUAZDC011` (EU), `MUSAZDC011` (US) | DCs por región |
@@ -42,10 +42,10 @@ Las tres están alojadas en el **RZ FFM** (Rechenzentrum Frankfurt am Main), la 
 | VM | IP | OS | Rol (Defender Device Role) | Criticidad |
 |---|---|---|---|---|
 | MEUAZDC011 | 172.30.1.8 | WindowsServer2022 | Dns, DomainController (confirmado) | High |
-| MEUAZAC011 | 172.30.1.7 | WindowsServer2019 | EntraConnectServer, AzureADConnectServer (confirmado) | High |
+| MEUAZAC011 | 172.30.1.7 | WindowsServer2019 | EntraConnectServer, AzureADConnectServer (confirmado) — detalle en [[maswer-aad-connect-server]]; ⚠️ disco C: al 98%, ver [[meuazac011-disco-c-insuficiente]] | High |
 | MEUAZPTA011 | 172.30.1.9 | WindowsServer2022 | sin tag — inferido por nombre (par HA con PTA012) | High |
 | MEUAZPTA012 | 172.30.1.10 | WindowsServer2022 | sin tag — inferido por nombre (par HA con PTA011) | High |
-| MEUAZEX001 | 172.30.1.11 | WindowsServer2022 | ExchangeServer (confirmado) | Very High |
+| MEUAZEX001 | 172.30.1.11 | WindowsServer2022 | ⚠️ etiqueta Defender = ExchangeServer, pero **NO tiene Exchange instalado** — verificado en la máquina 22-jul-2026 (ver la fila "Exchange híbrido" de la tabla de tareas y [[maswer-exchange-hybrid]]). La etiqueta es lo único que sostenía el rol | Very High |
 | MEUAZFW001 | pública 108.142.212.203 (Linux) | — (no aparece en el CSV de Defender, fuera de alcance por ser Linux/gateway) | Firewall Sophos SSL VPN de la región EU (confirmado por el usuario) | — |
 | MEUAZAVD-0 | — | — | Azure Virtual Desktop host | — |
 
